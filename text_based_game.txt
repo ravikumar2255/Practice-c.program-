@@ -1,0 +1,84 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+int playerHealth = 100;
+int monsterHealth = 50;
+int potions = 3;
+
+void fightMonster() {
+    int playerAttack = rand() % 20 + 5;
+    int monsterAttack = rand() % 15 + 3;
+
+    printf("\nYou attack the monster for %d damage!\n", playerAttack);
+    monsterHealth -= playerAttack;
+
+    if (monsterHealth > 0) {
+        printf("The monster attacks you for %d damage!\n", monsterAttack);
+        playerHealth -= monsterAttack;
+    } else {
+        printf("You defeated the monster!\n");
+        monsterHealth = 50; // Reset monster
+    }
+}
+
+void heal() {
+    if (potions > 0) {
+        int healAmount = rand() % 20 + 10;
+        playerHealth += healAmount;
+        potions--;
+        printf("\nYou used a potion and healed %d health!\n", healAmount);
+    } else {
+        printf("\nNo potions left!\n");
+    }
+}
+
+void showStatus() {
+    printf("\n=== STATUS ===\n");
+    printf("Your Health: %d\n", playerHealth);
+    printf("Monster Health: %d\n", monsterHealth);
+    printf("Potions: %d\n", potions);
+    printf("==============\n");
+}
+
+int main() {
+    int choice;
+    srand(time(0));
+
+    printf("=== Welcome to the Adventure Game ===\n");
+
+    while (playerHealth > 0) {
+        showStatus();
+        printf("\nWhat would you like to do?\n");
+        printf("1. Fight Monster\n");
+        printf("2. Heal\n");
+        printf("3. Run Away\n");
+        printf("4. Quit\n");
+        printf("Enter choice: ");
+        scanf("%d", &choice);
+
+        switch (choice) {
+            case 1:
+                fightMonster();
+                break;
+            case 2:
+                heal();
+                break;
+            case 3:
+                printf("\nYou ran away safely!\n");
+                monsterHealth = 50; // Reset monster
+                break;
+            case 4:
+                printf("\nThanks for playing!\n");
+                return 0;
+            default:
+                printf("\nInvalid choice!\n");
+        }
+
+        if (playerHealth <= 0) {
+            printf("\nYou have been defeated... Game Over!\n");
+        }
+    }
+
+    return 0;
+}
